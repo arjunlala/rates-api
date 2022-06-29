@@ -61,3 +61,5 @@ cur.execute("SELECT * FROM monthly_rates")
 rows = cur.fetchall()
 for row in rows:
     print(row)
+
+conn.close()
