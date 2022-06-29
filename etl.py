@@ -48,7 +48,7 @@ if check_date < datetime.now():
         del row[2]
         row[0] = row[0].replace("/", "")
         sql = """
-            INSERT OR IGNORE INTO monthly_rates (maturity_date, sofr, libor) VALUES ('{date}', {so}, {li});
+            INSERT OR REPLACE INTO monthly_rates (maturity_date, sofr, libor) VALUES ('{date}', {so}, {li});
         """.format(date = row[0], so = row[1], li = row[2])
         cur.execute(sql)
         conn.commit()
