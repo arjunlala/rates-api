@@ -27,18 +27,17 @@ def read_api(mat_date: str, floor: float, ceiling: float, spread: float, db: Ses
     for row in list_of_pensfords:
         row = row.__dict__
         ref_date = row.get("maturity_date")
+        new_sofr = row.get("sofr")/100 + spread
+        if (new_sofr > ceiling):
+            row["sofr"] = ceiling
+        elif (new_sofr < floor):
+            row["sofr"] = floor
+        else:
+            row["sofr"] = new_sofr
+        del row["libor"]
+        sofr_list.append(row)
         if (ref_date == mat_date):
             break
-        else:
-            new_sofr = row.get("sofr")/100 + spread
-            if (new_sofr > ceiling):
-                row["sofr"] = ceiling
-            elif (new_sofr < floor):
-                row["sofr"] = floor
-            else:
-                row["sofr"] = new_sofr
-            del row["libor"]
-            sofr_list.append(row)
     return sofr_list
 
 
@@ -49,16 +48,15 @@ def read_api(mat_date: str, floor: float, ceiling: float, spread: float, db: Ses
     for row in list_of_pensfords:
         row = row.__dict__
         ref_date = row.get("maturity_date")
+        new_libor = row.get("libor")/100 + spread
+        if (new_libor > ceiling):
+            row["libor"] = ceiling
+        elif (new_libor < floor):
+            row["libor"] = floor
+        else:
+            row["libor"] = new_libor
+        del row["sofr"]
+        libor_list.append(row)
         if (ref_date == mat_date):
             break
-        else:
-            new_libor = row.get("libor")/100 + spread
-            if (new_libor > ceiling):
-                row["libor"] = ceiling
-            elif (new_libor < floor):
-                row["libor"] = floor
-            else:
-                row["libor"] = new_libor
-            del row["sofr"]
-            libor_list.append(row)
     return libor_list
