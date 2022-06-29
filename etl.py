@@ -43,19 +43,21 @@ for row in rows:
 first_element = data[0]
 check_date = datetime.strptime(first_element[0], '%m/%d/%Y')
 
-if check_date < datetime.now():
-    for row in data:
-        del row[2]
-        row[0] = row[0].replace("/", "")
-        sql = """
-            INSERT OR REPLACE INTO monthly_rates (maturity_date, sofr, libor) VALUES ('{date}', {so}, {li});
-        """.format(date = row[0], so = row[1], li = row[2])
-        cur.execute(sql)
-        conn.commit()
+cur.execute("DELETE FROM monthly_rates;")
+conn.commit()
+
+for row in data:
+    del row[2]
+    row[0] = row[0].replace("/", "")
+    sql = """
+        INSERT OR REPLACE INTO monthly_rates (maturity_date, sofr, libor) VALUES ('{date}', {so}, {li});
+    """.format(date = row[0], so = row[1], li = row[2])
+    cur.execute(sql)
+    conn.commit()
 
 # Execute query on the sqlite DB
 cur = conn.cursor()
-cur.execute("SELECT * FROM monthly_rates")
+cur.execute("SELECT * FROM monthly_rates;")
 
 # Print everything from a table
 rows = cur.fetchall()
