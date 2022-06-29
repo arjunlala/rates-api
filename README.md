@@ -65,4 +65,15 @@ You can run this API using `rates-api\FastAPI\uvicorn main:app --port 8000`
 - I am aware that these APIs are not safe to use for any production environment. They are vulnerable to malicious users so authentication would be the first step to improve security.
 
 ## Closing
-There is a lot more than can be done to these programs to improve their usability and reliability. Given the opportunity I would like to spend more time in further developing the APIs to complete the rquirements in full.
+There is a lot more than can be done to these programs to improve their usability and reliability. Given the opportunity I would like to spend more time in further developing the APIs to complete the requirements in full.
+
+# Update
+It currently does not work over multi-days as the response order gets messed up due to the indexing based on the maturity_date.
+6/28 can run in full and be all 6/28
+But then when we pull 6/29 then it will show as 
+6282022
+6292022
+7282022
+7292022
+
+Adding the truncate before load as mentioned up top. Further adjustments can be made if we want persistent data.
